@@ -1,29 +1,47 @@
 package main
 
 import (
-	image "image"
-	"image/draw"
-	_ "image/jpeg"
-	"os"
-
 	"github.com/disintegration/imaging"
+	"image"
+	"image/color"
+	"image/draw"
+	"math"
 )
 
-func ProcImage(imgOriginal image.Image, x int, y int, width int, height int) (image.Image, error) {
-	file, err := os.Open("xmas_hat.png")
-	if err != nil {
-		return nil, err
+func RInt(f float64) int {
+	return int(math.Round(f))
+}
+
+func CompositeImg(background image.Image, foreground image.Image, x int, y int, w int, h int, r float64) image.Image {
+	canvas := image.NewNRGBA(background.Bounds())
+
+	foreground = resize(foreground, w, h)
+	foreground, x, y = rotate(foreground, x, y, r)
+
+	draw.Draw(canvas, background.Bounds(), background, image.Point{}, draw.Over)
+	draw.Draw(canvas, foreground.Bounds().Add(image.Pt(x, y)), foreground, image.Point{}, draw.Over)
+
+	return canvas
+}
+
+func resize(foreground image.Image, w int, h int) image.Image {
+	if w < 0 {
+		foreground = imaging.FlipH(foreground)
+		w = -w
 	}
-	imgXmasHat, _, err := image.Decode(file)
-	if err != nil {
-		return nil, err
+	if h < 0 {
+		foreground = imaging.FlipV(foreground)
+		h = -h
 	}
+	foreground = imaging.Resize(foreground, w, h, imaging.Lanczos)
+	return foreground
+}
 
-	imgXmasHat = imaging.Resize(imgXmasHat, width, height, imaging.Lanczos)
-
-	canvas := image.NewNRGBA(imgOriginal.Bounds())
-	draw.Draw(canvas, imgOriginal.Bounds(), imgOriginal, image.Pt(0, 0), draw.Over)
-	draw.Draw(canvas, imgXmasHat.Bounds(), imgXmasHat, image.Pt(x, y), draw.Over)
-
-	return canvas, nil
+func rotate(foreground image.Image, x int, y int, r float64) (image.Image, int, int) {
+	cx := float64(x) + float64(foreground.Bounds().Dx())/2
+	cy := float64(y) + float64(foreground.Bounds().Dy())/2
+	foreground = imaging.Rotate(foreground, r, color.Alpha{})
+	x = RInt(cx - float64(foreground.Bounds().Dx())/2)
+	y = RInt(cy - float64(foreground.Bounds().Dy())/2)
+	return foreground, x, y
 }
