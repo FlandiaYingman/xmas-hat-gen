@@ -4,7 +4,7 @@ import Image from 'mui-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Moveable from 'react-moveable';
-import imageXhat from './xhat.png';
+import imageXhat from './assets/xhat.png';
 
 function parseTransform() {
   return (styleStr) => {
