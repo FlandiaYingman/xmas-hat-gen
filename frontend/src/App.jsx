@@ -65,7 +65,7 @@ class App extends React.Component {
         body.append('img', img);
         return body;
       })
-      .then((form) => fetch('http://localhost:8000/', {
+      .then((form) => fetch('/api', {
         method: 'POST',
         body: form,
       }))
