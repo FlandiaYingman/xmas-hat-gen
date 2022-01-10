@@ -6,31 +6,29 @@ import React from 'react';
 import Moveable from 'react-moveable';
 import imageXhat from './assets/xhat.png';
 
-function parseTransform() {
-  return (styleStr) => {
-    const translateRegex = /translate\((.*?)px, (.*?)px\)/;
-    const scaleRegex = /scale\((.*?), (.*?)\)/;
-    const rotateRegex = /rotate\((.*?)deg\)/;
-    const translateResult = translateRegex.exec(styleStr);
-    const scaleResult = scaleRegex.exec(styleStr);
-    const rotateResult = rotateRegex.exec(styleStr);
+function parseTransform(styleStr) {
+  const translateRegex = /translate\((.*?)px, (.*?)px\)/;
+  const scaleRegex = /scale\((.*?), (.*?)\)/;
+  const rotateRegex = /rotate\((.*?)deg\)/;
+  const translateResult = translateRegex.exec(styleStr);
+  const scaleResult = scaleRegex.exec(styleStr);
+  const rotateResult = rotateRegex.exec(styleStr);
 
-    const dx = parseFloat(translateResult?.[1]);
-    const dy = parseFloat(translateResult?.[2]);
-    const sx = parseFloat(scaleResult?.[1]);
-    const sy = parseFloat(scaleResult?.[2]);
-    const r = parseFloat(rotateResult?.[1]);
+  const dx = parseFloat(translateResult?.[1]);
+  const dy = parseFloat(translateResult?.[2]);
+  const sx = parseFloat(scaleResult?.[1]);
+  const sy = parseFloat(scaleResult?.[2]);
+  const r = parseFloat(rotateResult?.[1]);
 
-    // the dx and dy are the horizontal and vertical offsets.
-    // the sx and sy are the scale factors.
-    // the r is the degrees of rotation.
-    return {
-      dx,
-      dy,
-      sx,
-      sy,
-      r,
-    };
+  // the dx and dy are the horizontal and vertical offsets.
+  // the sx and sy are the scale factors.
+  // the r is the degrees of rotation.
+  return {
+    dx,
+    dy,
+    sx,
+    sy,
+    r,
   };
 }
 
