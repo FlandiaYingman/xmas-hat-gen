@@ -1,4 +1,4 @@
-module xmas-hat-gen-backend
+module github.com/flandiayingman/xmas-hat-gen
 
 go 1.17
 

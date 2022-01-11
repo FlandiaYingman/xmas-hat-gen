@@ -1,16 +1,22 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:alpine
-
+# Build
+FROM golang:alpine AS build
 WORKDIR /app
+
 COPY go.mod ./
 COPY go.sum ./
-
 RUN go mod download
 
 COPY . .
-RUN go build -o /xmas-hat-gen-backend
+RUN go build -o / ./...
+
+# Deploy
+FROM gcr.io/distroless/static-debian11 AS deploy
+WORKDIR /
+
+COPY --from=build /xmas-hat-gen /xmas-hat-gen
 
 EXPOSE 8000
-
-CMD [ "/xmas-hat-gen-backend" ]
+USER nonroot:nonroot
+ENTRYPOINT ["/xmas-hat-gen"]

@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"bufio"
@@ -21,7 +21,7 @@ type XmasHatGenRequest struct {
 	R  float64 `form:"r"`
 }
 
-func main() {
+func LaunchFiber() {
 	app := fiber.New()
 
 	app.Get("/", handleGet)
@@ -90,7 +90,7 @@ func handlePost(c *fiber.Ctx) error {
 }
 
 func handleRequest(backgroundData io.Reader, request XmasHatGenRequest) (image.Image, error) {
-	foregroundData, err := os.Open("xhat.png")
+	foregroundData, err := os.Open("assets/xhat.png")
 	if err != nil {
 		return nil, err
 	}
