@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build
-FROM golang:alpine AS build
+FROM golang:bullseye AS build
 WORKDIR /app
 
 COPY go.mod ./
@@ -12,11 +12,11 @@ COPY . .
 RUN go build -o / ./...
 
 # Deploy
-FROM gcr.io/distroless/static-debian11 AS deploy
+FROM gcr.io/distroless/base-debian11 AS deploy
 WORKDIR /
 
 COPY --from=build /xmas-hat-gen /xmas-hat-gen
+COPY --from=build /app/assets /assets
 
 EXPOSE 8000
-USER nonroot:nonroot
 ENTRYPOINT ["/xmas-hat-gen"]
