@@ -1,24 +1,19 @@
-# Christmas Hat Generator - Backend
+# Christmas Hat Generator (xmas-hat-gen)
 
-## API
+Generate a lovely Christmas Hat on your favorite anime characters.
 
-### Generating a Christmas Hat on your Image
+I am new to Golang, React and Docker and this project was created for learning purpose. If you find some obvious
+mistakes, I would appreciate it if you could create an issue or pull request. 😋
 
-#### Path
+# Docker
 
-`POST /`
+Clone this repository, and run:
 
-#### Payload
+`docker compose up`
 
-| Name  | Type  | Description                                                              |
-|-------|-------|--------------------------------------------------------------------------|
-| `dx`  | float | The x offset of the Xmas Hat. The origin is at the center of your image. |
-| `dy`  | float | The y offset of the Xmas Hat. The origin is at the center of your image. |
-| `sx`  | float | The x-axis scale factor of the Xmas Hat.                                 |
-| `sy`  | float | The y-axis scale factor of the Xmas Hat.                                 |
-| `r`   | float | The clockwise rotation offset of the Xmas Hat, in degrees.               |
-| `img` | file  | Your image, in `jpeg` or `png`.                                          |
+Wait till all services are up. You can access `http://localhost:8080/` to generate your Christmas Hat now!
 
-#### Response
+# Acknowledgements
 
-A `image/png` image, showing the Xmas Hat on top of your image with the specified transformations.
+Thanks to [Penguin Statics](https://github.com/penguin-statistics) group's kindly and clever members for guiding me
+getting started with Golang, React and Docker.
