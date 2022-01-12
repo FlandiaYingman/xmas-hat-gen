@@ -1,0 +1,10 @@
+version: "3"
+services:
+  backend:
+    image: "flandiayingman/xmas-hat-gen-backend"
+
+  frontend:
+    image: "flandiayingman/xmas-hat-gen-frontend"
+
+networks:
+  xmas-network:
