@@ -2,8 +2,8 @@ version: "3"
 services:
   nginx:
     depends_on:
-      - frontend
       - backend
+      - frontend
     image: "nginx:latest"
     container_name: "nginx"
     volumes:
@@ -13,21 +13,21 @@ services:
     networks:
       - xmas-network
 
-  frontend:
-    image: "flandiayingman/xmas-hat-gen-frontend"
-    container_name: "xhat-frontend"
-    expose:
-      - "3000"
-    networks:
-      - xmas-network
-
   backend:
-    image: "flandiayingman/xmas-hat-gen-backend"
+    build: "."
     container_name: "xhat-backend"
     expose:
       - "8000"
     networks:
       - "xmas-network"
+
+  frontend:
+    build: "./website"
+    container_name: "xhat-frontend"
+    expose:
+      - "3000"
+    networks:
+      - xmas-network
 
 networks:
   xmas-network:
