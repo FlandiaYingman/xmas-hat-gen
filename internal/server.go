@@ -21,8 +21,25 @@ type XmasHatGenRequest struct {
 	R  float64 `form:"r"`
 }
 
+func handleErr(c *fiber.Ctx, err error) error {
+	code := fiber.StatusInternalServerError
+	if e, ok := err.(*fiber.Error); ok {
+		// Override status code if fiber.Error type
+		code = e.Code
+	}
+	log.WithFields(log.Fields{
+		"err":     err,
+		"context": c,
+	}).Warn("Error occurs")
+	c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
+	return c.Status(code).SendString(err.Error())
+}
+
 func LaunchFiber() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		BodyLimit:    20 * 1024 * 1024, // 20 MiB
+		ErrorHandler: handleErr,
+	})
 
 	app.Get("/", handleGet)
 	app.Post("/", handlePost)
