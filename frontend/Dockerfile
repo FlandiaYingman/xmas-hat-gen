@@ -1,13 +1,25 @@
 # syntax=docker/dockerfile:1
 
-FROM node:17-alpine
-
-ENV NODE_ENV=production
+# Build
+FROM node:17-alpine AS build
 
 WORKDIR /app
 
-COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install --production
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci
 
 COPY . .
-CMD ["npm", "start"]
+RUN npm run build
+
+# Deploy
+FROM alpine AS  deploy
+
+WORKDIR /app
+
+COPY --from=build /app/build/ /app
+RUN apk add thttpd
+
+EXPOSE 3000
+
+CMD ["thttpd", "-p", "3000", "-D", "-l", "-"]
