@@ -47,6 +47,6 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: .
+          context: ./website
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}-frontend:latest
